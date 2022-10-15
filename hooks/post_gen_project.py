@@ -88,9 +88,15 @@ def prepare_frontend(volto_version: str, description: str):
             "frontend",
         ],
         [
-            f"Generate frontend application with @plone/volto {_info(volto_version)}",
-            f"yo @plone/volto frontend --description '{description}' {addons} "
-            f"--skip-install --no-interactive --volto={volto_version}{canary}",
+            (
+                "Generate frontend application with @plone/volto"
+                f" {_info(volto_version)}"
+            ),
+            (
+                f"yo @plone/volto frontend --description '{description}'"
+                f" {addons} --skip-install --no-interactive"
+                f" --volto={volto_version}{canary}"
+            ),
             True,
             "frontend",
         ],
@@ -113,15 +119,35 @@ def prepare_frontend(volto_version: str, description: str):
     with open(cfg, "r") as fh:
         data = fh.read()
     with open(cfg, "w") as fh:
-        new_data = re.sub("\n  \/\/ Add here your project.*\n", VOLTO_CONFIG, data)
+        new_data = re.sub(
+            "\n  \/\/ Add here your project.*\n", VOLTO_CONFIG, data
+        )
         fh.write(new_data)
 
 
-def prepare_backend():
-    """Apply black and isort to the generated codebase."""
+def prepare_backend(python_package_name: str):
+    """Run plonecli/bobtemplates to create the package.
+    Apply black and isort to the generated codebase."""
     print("Backend codebase")
     steps = [
-        ["Format generated code in the backend", ["make", "format"], False, "backend"]
+        [
+            "Create python package using bobtemplates/plonecli",
+            [
+                (
+                    "mrbob --config src/.mrbob.ini -O"
+                    f" src/{python_package_name}"
+                    " bobtemplates.plone:addon"
+                ),
+            ],
+            True,
+            "backend",
+        ],
+        [
+            "Format generated code in the backend",
+            ["make", "format"],
+            False,
+            "backend",
+        ],
     ]
     for step in steps:
         msg, command, shell, cwd = step
@@ -133,13 +159,14 @@ def prepare_backend():
 
 volto_version = "{{ cookiecutter.volto_version }}"
 description = "{{ cookiecutter.description }}"
+python_package_name = "{{ cookiecutter.python_package_name }}"
 
 
 def main():
     """Final fixes."""
     prepare_frontend(volto_version=volto_version, description=description)
     print("")
-    prepare_backend()
+    prepare_backend(python_package_name=python_package_name)
     print(f"{MSG_DELIMITER}")
     msg = dedent(
         f"""
