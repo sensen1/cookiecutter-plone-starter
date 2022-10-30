@@ -88,15 +88,9 @@ def prepare_frontend(volto_version: str, description: str):
             "frontend",
         ],
         [
-            (
-                "Generate frontend application with @plone/volto"
-                f" {_info(volto_version)}"
-            ),
-            (
-                f"yo @plone/volto frontend --description '{description}'"
-                f" {addons} --skip-install --no-interactive"
-                f" --volto={volto_version}{canary}"
-            ),
+            f"Generate frontend application with @plone/volto {_info(volto_version)}",
+            f"yo @plone/volto frontend --description '{description}' {addons} "
+            f"--skip-install --no-interactive --volto={volto_version}{canary}",
             True,
             "frontend",
         ],
@@ -119,9 +113,7 @@ def prepare_frontend(volto_version: str, description: str):
     with open(cfg, "r") as fh:
         data = fh.read()
     with open(cfg, "w") as fh:
-        new_data = re.sub(
-            "\n  \/\/ Add here your project.*\n", VOLTO_CONFIG, data
-        )
+        new_data = re.sub("\n  \/\/ Add here your project.*\n", VOLTO_CONFIG, data)
         fh.write(new_data)
 
 
@@ -133,11 +125,9 @@ def prepare_backend(python_package_name: str):
         [
             "Create python package using bobtemplates/plonecli",
             [
-                (
-                    "mrbob --config src/.mrbob.ini -O"
-                    f" src/{python_package_name}"
-                    " bobtemplates.plone:addon"
-                ),
+                "mrbob --config src/.mrbob.ini -O"
+                f" src/{python_package_name}"
+                " bobtemplates.plone:addon",
             ],
             True,
             "backend",
@@ -145,7 +135,7 @@ def prepare_backend(python_package_name: str):
         [
             "Format generated code in the backend",
             ["make", "format"],
-            False,
+            True,
             "backend",
         ],
     ]
