@@ -133,6 +133,14 @@ def prepare_backend(python_package_name: str):
             "backend",
         ],
         [
+            "Use the starter template in bobtemplates.plone to create some defaults",
+            [
+                "mrbob --config ../.mrbob.ini bobtemplates.plone:starter",
+            ],
+            True,
+            f"backend/src/{python_package_name}",
+        ],
+        [
             "Format generated code in the backend",
             ["make", "format"],
             True,
