@@ -118,24 +118,23 @@ def prepare_frontend(volto_version: str, description: str):
 
 
 def prepare_backend(python_package_name: str):
-    """Run plonecli/bobtemplates to create the package.
+    """Run plonecli to create the package.
     Apply black and isort to the generated codebase."""
     print("Backend codebase")
     steps = [
         [
-            "Create python package using bobtemplates/plonecli",
+            "Create python package using plonecli",
             [
-                "mrbob --config src/.mrbob.ini -O"
+                "pipx run plonecli create addon --config src/.mrbob.ini "
                 f" src/{python_package_name}"
-                " bobtemplates.plone:addon",
             ],
             True,
             "backend",
         ],
         [
-            "Use the starter template in bobtemplates.plone to create some defaults",
+            "Use the starter template in plonecli to create some defaults",
             [
-                "mrbob --config ../.mrbob.ini bobtemplates.plone:starter",
+                "pipx run plonecli add starter --config ../.mrbob.ini",
             ],
             True,
             f"backend/src/{python_package_name}",
