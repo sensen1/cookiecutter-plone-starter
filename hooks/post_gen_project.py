@@ -125,7 +125,7 @@ def prepare_backend(python_package_name: str):
         [
             "Create python package using plonecli",
             [
-                "pipx run plonecli create addon --config src/.mrbob.ini "
+                "pipx run plonecli create --bobconfig=src/.mrbob.ini addon "
                 f" src/{python_package_name}"
             ],
             True,
@@ -134,7 +134,7 @@ def prepare_backend(python_package_name: str):
         [
             "Use the starter template in plonecli to create some defaults",
             [
-                "pipx run plonecli add starter --config ../.mrbob.ini",
+                "pipx run plonecli add --bobconfig=../.mrbob.ini starter",
             ],
             True,
             f"backend/src/{python_package_name}",
